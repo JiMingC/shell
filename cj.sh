@@ -2,6 +2,8 @@
 time=$(date "+%m-%d")
 #echo $time
 
+
+
 var=$1
 mnt="/mnt/nfsroot/jiming.cai"
 cur_path=$(pwd)
