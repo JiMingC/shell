@@ -32,6 +32,10 @@ else
 		[[ $cur_pro != "tvbase" ]] && 
 		[[ $cur_pro != "tcl" ]] && 
 		[[ $cur_pro != "cvte" ]] &&
+		[[ $cur_pro != "featlist" ]] &&
+		[[ $cur_pro != "new_sky" ]] &&
+		[[ $cur_pro != "skyworth" ]] &&
+		[[ $cur_pro != "skyworth_server" ]] &&
 		[[ $cur_pro != "fae" ]];then
 		echo "not in a project dir"
 	else
@@ -62,13 +66,21 @@ else
 			libtv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
 			hwc) cd /mnt/nfsroot/jiming.cai/$cur_pro/hardware/amlogic/hwcomposer;;
 			pro) cd /mnt/nfsroot/jiming.cai/$cur_pro/;;
-			#######################################################################
+			ub) cd /mnt/nfsroot/jiming.cai/$cur_pro/bootloader/uboot-repo;;
+			libtv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
+			skytv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/tv/skyhdi/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
+            ##for skyworth
+            skyhal) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
+            skycat) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/apps/TvCastleRelease;;
+            #######################################################################
 			#change pro_dir
 			tvbase) cd $mnt/$var/$subpath;;
 			aosp) cd $mnt/$var/$subpath;;
 			tcl) cd $mnt/$var/$subpath;;
 			cvte) cd $mnt/$var/android/$subpath;;
 			fae) cd $mnt/$var/$subpath;;
+			new_sky) cd $mnt/$var/$subpath;;
+            skyworth) cd $mnt/$var/$subpath;;
 			#######################################################################
 			#make
 			make)
@@ -121,6 +133,10 @@ else
 				#echo "$2 has been cp to $dst_path"
 				;;
 			#######################################################################
+			#mv file to /mnt/nfsroot/jiming.cai/tmp
+			mv)
+				mv $2 /mnt/nfsroot/jiming.cai/tmp/
+			;;
 			help)
 				echo "cjm help";;
 		esac
