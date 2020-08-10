@@ -69,10 +69,10 @@ else
 			ub) cd /mnt/nfsroot/jiming.cai/$cur_pro/bootloader/uboot-repo;;
 			libtv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
 			skytv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/tv/skyhdi/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
-            ##for skyworth
-            skyhal) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
-            skycat) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/apps/TvCastleRelease;;
-            #######################################################################
+			##for skyworth
+			skyhal) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
+			skycat) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/apps/TvCastleRelease;;
+			#######################################################################
 			#change pro_dir
 			tvbase) cd $mnt/$var/$subpath;;
 			aosp) cd $mnt/$var/$subpath;;
@@ -80,7 +80,7 @@ else
 			cvte) cd $mnt/$var/android/$subpath;;
 			fae) cd $mnt/$var/$subpath;;
 			new_sky) cd $mnt/$var/$subpath;;
-            skyworth) cd $mnt/$var/$subpath;;
+			skyworth) cd $mnt/$var/$subpath;;
 			#######################################################################
 			#make
 			make)
