@@ -7,7 +7,7 @@ mnt="/mnt/nfsroot/jiming.cai"
 cur_path=$(pwd)
 
 #current project name
-cur_pro=${cur_path:24:10}
+cur_pro=${cur_path:24:13}
 cur_pro=${cur_pro%/*}
 
 #current pro subdir
@@ -34,8 +34,12 @@ else
 		[[ $cur_pro != "cvte" ]] &&
 		[[ $cur_pro != "featlist" ]] &&
 		[[ $cur_pro != "new_sky" ]] &&
-		[[ $cur_pro != "skyworth" ]] &&
-		[[ $cur_pro != "skyworth_server" ]] &&
+		[[ $cur_pro != "p_xiaomi_963" ]] &&
+		[[ $cur_pro != "p_sky_920" ]] &&
+		[[ $cur_pro != "p_sky_921" ]] &&
+		[[ $cur_pro != "rdk" ]] &&
+		[[ $cur_pro != "p_sky_963" ]] &&
+		[[ $cur_pro != "p_aml_921" ]] &&
 		[[ $cur_pro != "fae" ]];then
 		echo "not in a project dir"
 	else
@@ -48,31 +52,43 @@ else
 		else
 			dts="common/customer/arch/arm/boot/dts"
 		fi
+
+		if [[ $cur_pro = "p_sky_921" ]] || [[ $cur_pro = "rdk" ]] || [[ $cur_pro = "p_sky_921" ]];then
+            skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv/"
+            skycat="vendor/amlogic/tvcastle"
+            panel="vendor/skyworth/release/install/factory/atv/panel/7A41T_E3A/pq"
+		else
+            skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv"
+            panel="device/skyworth/common/factory/factory_db3/cfg/panel/"
+		fi
 		#echo $cur_pro
 		
 		#switch argv to select shell
 		case $var in
 			#######################################################################
 			#cd freq dir
-			vdin) cd /mnt/nfsroot/jiming.cai/$cur_pro/common/drivers/amlogic/media/vin/tvin/vdin;;
-			auge) cd /mnt/nfsroot/jiming.cai/$cur_pro/common/sound/soc/amlogic/auge ;;
-			fw) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/frameworks ;;
-			sys) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/frameworks/services/systemcontrol;;
-			tv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv;;
-			dts) cd /mnt/nfsroot/jiming.cai/$cur_pro/$dts;;
-			hal) cd /mnt/nfsroot/jiming.cai/$cur_pro/hardware/amlogic/audio/audio_hal;;
-			out) cd /mnt/nfsroot/jiming.cai/$cur_pro/out/target/product/;;
-			vdin) cd /mnt/nfsroot/jiming.cai/$cur_pro/common/drivers/amlogic/media/vin/tvin/vdin;;
-			libtv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
-			hwc) cd /mnt/nfsroot/jiming.cai/$cur_pro/hardware/amlogic/hwcomposer;;
-			pro) cd /mnt/nfsroot/jiming.cai/$cur_pro/;;
-			ub) cd /mnt/nfsroot/jiming.cai/$cur_pro/bootloader/uboot-repo;;
-			libtv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
-			skytv) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/tv/skyhdi/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
-			##for skyworth
-			skyhal) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
-			skycat) cd /mnt/nfsroot/jiming.cai/$cur_pro/vendor/amlogic/apps/TvCastleRelease;;
-			#######################################################################
+			vdin) cd $mnt/$cur_pro/common/drivers/amlogic/media/vin/tvin/vdin;;
+			auge) cd $mnt/$cur_pro/common/sound/soc/amlogic/auge ;;
+			fw) cd $mnt/$cur_pro/vendor/amlogic/common/frameworks ;;
+			sys) cd $mnt/$cur_pro/vendor/amlogic/common/frameworks/services/systemcontrol;;
+			tv) cd $mnt/$cur_pro/vendor/amlogic/common/tv;;
+			dts) cd $mnt/$cur_pro/$dts;;
+			hal) cd $mnt/$cur_pro/hardware/amlogic/audio/audio_hal;;
+			out) cd $mnt/$cur_pro/out/target/product/;;
+			vdin) cd $mnt/$cur_pro/common/drivers/amlogic/media/vin/tvin/vdin;;
+			libtv) cd $mnt/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
+			hwc) cd $mnt/$cur_pro/hardware/amlogic/hwcomposer;;
+			pro) cd $mnt/$cur_pro/;;
+			ub) cd $mnt/$cur_pro/bootloader/uboot-repo;;
+			libtv) cd $mnt/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
+			skytv) cd $mnt/$cur_pro/vendor/amlogic/tv/skyhdi/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
+            libcec) cd $mnt/$cur_pro/vendor/amlogic/common/frameworks/services/hdmicec/libhdmi_cec;;
+            ##for skyworth
+            skyhal) cd $mnt/$cur_pro/$skyhal;;
+            skycat) cd $mnt/$cur_pro/$skycat;;
+            skybuild) cd $mnt/$cur_pro/vendor/skyworth/release/driverBase/hal3.0/build;;
+            panel) cd $mnt/$cur_pro/$panel;;
+            #######################################################################
 			#change pro_dir
 			tvbase) cd $mnt/$var/$subpath;;
 			aosp) cd $mnt/$var/$subpath;;
@@ -80,7 +96,7 @@ else
 			cvte) cd $mnt/$var/android/$subpath;;
 			fae) cd $mnt/$var/$subpath;;
 			new_sky) cd $mnt/$var/$subpath;;
-			skyworth) cd $mnt/$var/$subpath;;
+            skyworth) cd $mnt/$var/$subpath;;
 			#######################################################################
 			#make
 			make)
@@ -135,8 +151,16 @@ else
 			#######################################################################
 			#mv file to /mnt/nfsroot/jiming.cai/tmp
 			mv)
-				mv $2 /mnt/nfsroot/jiming.cai/tmp/
-			;;
+				cp $2 /mnt/nfsroot/jiming.cai/tmp/
+                ;;
+            ######################################################################
+            #cmake
+            cm)
+                cur_path=$(pwd)
+                if [ [ $cur_path == *skyhal* ] ] ;then
+                  echo 1  
+                fi
+                ;;
 			help)
 				echo "cjm help";;
 		esac
