@@ -20,6 +20,34 @@ patch_name=$time-${patch_name//\//-}
 #echo $patch_name
 #echo $subpath $cur_pro
 
+make_proj_skyworth() {
+    ./vendor/amlogic/TVLibRelease/auto_patch/auto_patch.sh
+    source setenv.sh t5d_am32a1_rdk_a32_release
+    if [[ "$1" = "uboot" ]]; then
+        make uboot-dirclean
+        make uboot
+    elif [[ "$1" = "boot" ]]; then
+        make linux-rebuild
+        make rootfs-cpio
+    elif [[ "$1" = "debug" ]]; then
+        make 
+    fi
+}
+
+
+make_proj_sky_920() {
+    source build/envsetup.sh 
+    lunch skyT920L_3A011-userdebug-32
+    if [[ "$1" = "uboot" ]]; then
+        make uboot-dirclean
+        make uboot
+    elif [[ "$1" = "boot" ]] || [[ "$1" = "dtb" ]]; then
+        make bootimage
+    elif [[ "$1" = "debug" ]]; then
+        make 
+    fi
+}
+
 #if argv is null
 if [ -z $1 ] ;then
 	cd $mnt
@@ -40,6 +68,7 @@ else
 		[[ $cur_pro != "rdk" ]] &&
 		[[ $cur_pro != "p_sky_963" ]] &&
 		[[ $cur_pro != "p_aml_921" ]] &&
+		[[ $cur_pro != "skyworth" ]] &&
 		[[ $cur_pro != "fae" ]];then
 		echo "not in a project dir"
 	else
@@ -53,13 +82,15 @@ else
 			dts="common/customer/arch/arm/boot/dts"
 		fi
 
-		if [[ $cur_pro = "p_sky_921" ]] || [[ $cur_pro = "rdk" ]] || [[ $cur_pro = "p_sky_921" ]];then
-            skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv/"
+		if [[ $cur_pro = "p_sky_921" ]] || [[ $cur_pro = "rdk" ]] || [[ $cur_pro = "p_sky_921" ]] || [[ $cur_pro = "skyworth" ]];then
+			skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv/"
             skycat="vendor/amlogic/tvcastle"
-            panel="vendor/skyworth/release/install/factory/atv/panel/7A41T_E3A/pq"
+            panel="vendor/skyworth/release/install/factory/atv/panel/"
+            uboot="bootloader/uboot-repo/bl33/v2015/board/amlogic/t5d_am32a1_v1/"
 		else
-            skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv"
+			skyhal="vendor/skyworth/driverBase/hal3.0/skyhal/platform/amlogic/tv"
             panel="device/skyworth/common/factory/factory_db3/cfg/panel/"
+            uboot="bootloader/uboot-repo"
 		fi
 		#echo $cur_pro
 		
@@ -79,7 +110,7 @@ else
 			libtv) cd $mnt/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
 			hwc) cd $mnt/$cur_pro/hardware/amlogic/hwcomposer;;
 			pro) cd $mnt/$cur_pro/;;
-			ub) cd $mnt/$cur_pro/bootloader/uboot-repo;;
+			ub) cd $mnt/$cur_pro/$uboot;;
 			libtv) cd $mnt/$cur_pro/vendor/amlogic/common/tv/tvserver/libtv;;
 			skytv) cd $mnt/$cur_pro/vendor/amlogic/tv/skyhdi/driverBase/hal3.0/skyhal/platform/amlogic/tv;;
             libcec) cd $mnt/$cur_pro/vendor/amlogic/common/frameworks/services/hdmicec/libhdmi_cec;;
@@ -151,14 +182,16 @@ else
 			#######################################################################
 			#mv file to /mnt/nfsroot/jiming.cai/tmp
 			mv)
-				cp $2 /mnt/nfsroot/jiming.cai/tmp/
+				mv $2 /mnt/nfsroot/jiming.cai/tmp/
                 ;;
             ######################################################################
             #cmake
             cm)
-                cur_path=$(pwd)
-                if [ [ $cur_path == *skyhal* ] ] ;then
-                  echo 1  
+                if [[ $cur_pro == "skyworth" ]] || [[ $cur_pro == "p_sky_921" ]] ;then
+                    make_proj_skyworth $2
+                fi
+                if [[ $cur_pro == "p_sky_920" ]] ;then
+                    make_proj_sky_920 $2
                 fi
                 ;;
 			help)
